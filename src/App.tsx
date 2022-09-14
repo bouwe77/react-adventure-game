@@ -1,38 +1,37 @@
-import { ReactElement, useEffect, useState } from "react";
-import "./styles.css";
+import { ReactElement, useEffect, useState } from 'react'
 
-type Id = string;
+type Id = string
 
-type LocationId = Id;
+type LocationId = Id
 
-type DestinationId = Id;
+type DestinationId = Id
 
 type Destination = {
-  id: Id;
-  name: string;
-  toLocation: string;
-};
+  id: Id
+  name: string
+  toLocation: string
+}
 
 type Action = {
-  title: string;
-};
+  title: string
+}
 
 type Inventory = {
-  name: string;
-};
+  name: string
+}
 
 type Location = {
-  id: Id;
-  name: string;
-  text: ReactElement;
-  destinations: Destination[];
-  actions?: Action[];
-};
+  id: Id
+  name: string
+  text: ReactElement
+  destinations: Destination[]
+  actions?: Action[]
+}
 
 const game: Location[] = [
   {
-    id: "1d3ew4",
-    name: "outside",
+    id: '1d3ew4',
+    name: 'outside',
     text: (
       <>
         <p>
@@ -48,13 +47,13 @@ const game: Location[] = [
       </>
     ),
     destinations: [
-      { id: "f3tpqj", name: "To the castle", toLocation: "dkj32d" },
-      { id: "rny8ky", name: "To the tree", toLocation: "03kjfr" },
+      { id: 'f3tpqj', name: 'To the castle', toLocation: 'dkj32d' },
+      { id: 'rny8ky', name: 'To the tree', toLocation: '03kjfr' },
     ],
   },
   {
-    id: "dkj32d",
-    name: "castle",
+    id: 'dkj32d',
+    name: 'castle',
     text: (
       <>
         <p>You arrived at the castle.</p>
@@ -62,13 +61,13 @@ const game: Location[] = [
       </>
     ),
     destinations: [
-      { id: "2rgfwx", name: "To the field", toLocation: "1d3ew4" },
+      { id: '2rgfwx', name: 'To the field', toLocation: '1d3ew4' },
     ],
     //actions: [{ title: 'Open the door' }],
   },
   {
-    id: "03kjfr",
-    name: "tree",
+    id: '03kjfr',
+    name: 'tree',
     text: (
       <>
         <p>
@@ -79,50 +78,50 @@ const game: Location[] = [
       </>
     ),
     destinations: [
-      { id: "udx25c", name: "To the field", toLocation: "1d3ew4" },
+      { id: 'udx25c', name: 'To the field', toLocation: '1d3ew4' },
     ],
     //actions: [{ title: 'Open the chest' }],
   },
-];
+]
 
 const goToLocation = (
   fromLocation: LocationId,
-  toDestination: DestinationId
+  toDestination: DestinationId,
 ) => {
   const destination = game
     .find((s) => s.id === fromLocation)
-    ?.destinations.find((d) => d.id === toDestination);
+    ?.destinations.find((d) => d.id === toDestination)
 
-  if (!destination) throw new Error("Unknown destination");
+  if (!destination) throw new Error('Unknown destination')
 
-  const location = game.find((s) => s.id === destination.toLocation);
+  const location = game.find((s) => s.id === destination.toLocation)
 
   if (!location)
-    throw new Error(`Unknown locationId: ${destination.toLocation}`);
+    throw new Error(`Unknown locationId: ${destination.toLocation}`)
 
-  return Promise.resolve(location);
-};
+  return Promise.resolve(location)
+}
 
 const getCurrentLocation = async () => {
-  return Promise.resolve(game[0]);
-};
+  return Promise.resolve(game[0])
+}
 
 export default function App() {
-  const [currentLocation, setCurrentLocation] = useState<Location>();
-  const [holding, setHolding] = useState<Inventory[]>([]);
-  const [carrying, setCarrying] = useState<Inventory[]>([]);
+  const [currentLocation, setCurrentLocation] = useState<Location>()
+  const [holding, setHolding] = useState<Inventory[]>([])
+  const [carrying, setCarrying] = useState<Inventory[]>([])
 
   useEffect(() => {
-    getCurrentLocation().then((location) => setCurrentLocation(location));
-  }, []);
+    getCurrentLocation().then((location) => setCurrentLocation(location))
+  }, [])
 
   const goToDestination = async (destinationId: string) => {
-    if (!currentLocation) return;
-    const newLocation = await goToLocation(currentLocation.id, destinationId);
-    setCurrentLocation(newLocation);
-  };
+    if (!currentLocation) return
+    const newLocation = await goToLocation(currentLocation.id, destinationId)
+    setCurrentLocation(newLocation)
+  }
 
-  if (!currentLocation) return null;
+  if (!currentLocation) return null
 
   return (
     <div className="App">
@@ -175,5 +174,5 @@ export default function App() {
         ) : null}
       </div>
     </div>
-  );
+  )
 }
